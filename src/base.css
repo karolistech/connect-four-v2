@@ -23,3 +23,22 @@ body {
 .header__four {
   color: #fc0;
 }
+
+.board {
+  width: min(100%, 500px);
+  margin-inline: auto;
+}
+
+.board__top {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  padding: 0.5rem 1.5rem;
+}
+
+.board__column {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
