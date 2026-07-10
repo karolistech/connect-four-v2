@@ -11,8 +11,35 @@ function createBoard(): Board {
   return Array.from({ length: rows }, () => Array(cols).fill(null));
 }
 
+function getPlayerDisc(player: Player) {
+  return player === "red" ? "🔴" : "⭐";
+}
+
 export default function App() {
   const [board, setBoard] = useState(createBoard);
+  const [currentPlayer, setCurrentPlayer] = useState<Player>("red");
+
+  function dropDisc(col: number) {
+    const nextBoard = board.map(row => [...row]);
+    const nextPlayer = currentPlayer === "red" ? "yellow" : "red";
+
+    for (let row = rows - 1; row >= 0; row--) {
+      if (nextBoard[row][col] !== null) continue;
+
+      nextBoard[row][col] = currentPlayer;
+      setBoard(nextBoard);
+      setCurrentPlayer(nextPlayer);
+
+      return;
+    }
+  }
+
+  function getDiscClass(player: Player) {
+    const base = "board__disc";
+    const color = `board__disc--${player}`;
+
+    return [base, color].filter(Boolean).join(" ");
+  }
 
   return (
     <>
@@ -27,7 +54,7 @@ export default function App() {
         <div className="board__top">
           {Array.from({ length: cols }, (_, colIndex) => (
             <div key={colIndex} className="board__column">
-              <button className="board__btn">
+              <button className="board__btn" onClick={() => dropDisc(colIndex)}>
                 <svg viewBox="0 0 16 16" width="16" height="16" className="board__arrow">
                   <path d="M0 4 L16 4 L8 12 Z" />
                 </svg>
@@ -39,6 +66,11 @@ export default function App() {
         <div className="board__grid">
           {board.map((row, rowIndex) => row.map((cell, colIndex) => (
             <div key={`${rowIndex}-${colIndex}`} className="board__cell">
+              {cell && (
+                <div className={getDiscClass(cell)}>
+                  {getPlayerDisc(cell)}
+                </div>
+              )}
             </div>
           )))}
         </div>
