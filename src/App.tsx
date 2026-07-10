@@ -11,6 +11,32 @@ function createBoard(): Board {
   return Array.from({ length: rows }, () => Array(cols).fill(null));
 }
 
+function connectFour(board: Board, row: number, col: number, player: Player): boolean {
+  const directions = [[0, 1], [1, 0], [1, 1], [1, -1]] as const;
+
+  for (const [dr, dc] of directions) {
+    let count = 1;
+
+    for (let step = 1; step < 4; step++) {
+      if (board[row + dr * step]?.[col + dc * step] === player) count++;
+      else break;
+    }
+
+    for (let step = 1; step < 4; step++) {
+      if (board[row - dr * step]?.[col - dc * step] === player) count++;
+      else break;
+    }
+
+    if (count >= 4) return true;
+  }
+
+  return false;
+}
+
+function boardFull(board: Board): boolean {
+  return board.every(row => row.every(cell => cell !== null));
+}
+
 function getPlayerDisc(player: Player) {
   return player === "red" ? "🔴" : "⭐";
 }
@@ -18,8 +44,12 @@ function getPlayerDisc(player: Player) {
 export default function App() {
   const [board, setBoard] = useState(createBoard);
   const [currentPlayer, setCurrentPlayer] = useState<Player>("red");
+  const [gameOver, setGameOver] = useState(false);
+  const [winner, setWinner] = useState<Player | null>(null);
 
   function dropDisc(col: number) {
+    if (gameOver === true) return;
+
     const nextBoard = board.map(row => [...row]);
     const nextPlayer = currentPlayer === "red" ? "yellow" : "red";
 
@@ -28,7 +58,15 @@ export default function App() {
 
       nextBoard[row][col] = currentPlayer;
       setBoard(nextBoard);
-      setCurrentPlayer(nextPlayer);
+
+      if (connectFour(nextBoard, row, col, currentPlayer) === true) {
+        setWinner(currentPlayer);
+        setGameOver(true);
+      } else if (boardFull(nextBoard) === true) {
+        setGameOver(true);
+      } else {
+        setCurrentPlayer(nextPlayer);
+      }
 
       return;
     }
@@ -37,8 +75,9 @@ export default function App() {
   function getDiscClass(player: Player) {
     const base = "board__disc";
     const color = `board__disc--${player}`;
+    const faded = (gameOver === true && winner !== player) && "board__disc--faded";
 
-    return [base, color].filter(Boolean).join(" ");
+    return [base, color, faded].filter(Boolean).join(" ");
   }
 
   return (
@@ -59,6 +98,14 @@ export default function App() {
                   <path d="M0 4 L16 4 L8 12 Z" />
                 </svg>
               </button>
+
+              {gameOver !== true && (
+                <div className="board__disc--preview">
+                  <div className={`board__disc board__disc--${currentPlayer}`}>
+                    {getPlayerDisc(currentPlayer)}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -66,7 +113,7 @@ export default function App() {
         <div className="board__grid">
           {board.map((row, rowIndex) => row.map((cell, colIndex) => (
             <div key={`${rowIndex}-${colIndex}`} className="board__cell">
-              {cell && (
+              {cell !== null && (
                 <div className={getDiscClass(cell)}>
                   {getPlayerDisc(cell)}
                 </div>
