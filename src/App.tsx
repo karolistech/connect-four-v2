@@ -37,8 +37,24 @@ function boardFull(board: Board): boolean {
   return board.every(row => row.every(cell => cell !== null));
 }
 
+// function getPlayerDisc(player: Player) {
+//   return player === "red" ? "🔴" : "⭐";
+// }
+
 function getPlayerDisc(player: Player) {
-  return player === "red" ? "🔴" : "⭐";
+  if (player === "red") {
+    return (
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" fill="#d22" stroke="#333" stroke-width="1.5" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" fill="#fc0" stroke="#333" stroke-width="1.5" stroke-linejoin="round">
+      <path d="M12 2.8L14.9 8.7L21.4 9.6L16.7 14.1L17.9 20.6L12 17.5L6.1 20.6L7.3 14.1L2.6 9.6L9.1 8.7 Z" />
+    </svg>
+  );
 }
 
 export default function App() {
