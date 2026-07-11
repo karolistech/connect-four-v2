@@ -7,6 +7,7 @@
 }
 
 * {
+  /* border: 1px solid red; */
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -19,6 +20,10 @@ button {
 body {
   padding: 0.25rem;
   font-family: system-ui;
+}
+
+#root {
+  position: relative;
 }
 
 .header__title {
@@ -36,8 +41,91 @@ body {
   color: #fc0;
 }
 
+.menu {
+  max-width: 500px;
+  margin: 1.5rem auto;
+}
+
+.menu__btn {
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background-color: #eee;
+  color: #000;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.rules-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.rules-modal {
+  /* position: fixed; */
+  position: absolute;
+  inset: 0;
+  /* background-color: red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.rules-modal__content {
+  position: relative;
+  width: min(95%, 400px);
+  padding: 1rem;
+  border-radius: 4px;
+  background-color: #eee;
+}
+
+.rules-modal__title {
+  margin-bottom: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.rules-modal__section {
+  margin-bottom: 0.75rem;
+}
+
+.rules-modal__subtitle {
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  color: #7ab;
+  font-weight: 900;
+}
+
+.rules-modal__text {
+  line-height: 1.5;
+}
+
+.rules-modal__list {
+  list-style-position: inside;
+  line-height: 1.5;
+}
+
+.rules-modal__btn {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  left: 50%;
+  transform: translate(-50%, -15%);
+  border: none;
+  border-radius: 50%;
+  background-color: #7ab;
+  color: #fff;
+  font-size: 1.25rem;
+}
+
 .board {
   width: min(100%, 500px);
+  /* max-width: 500px; */
   margin-inline: auto;
 }
 
@@ -153,6 +241,14 @@ body {
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .menu__btn:hover {
+    filter: brightness(0.9);
+  }
+
+  .rules-modal__btn:hover {
+    filter: brightness(1.05);
+  }
+
   .board__btn:hover + .board__disc--preview,
   .board__btn:focus-visible + .board__disc--preview {
     display: block;

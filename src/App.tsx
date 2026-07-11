@@ -45,14 +45,15 @@ function getPlayerDisc(player: Player) {
   if (player === "red") {
     return (
       <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" fill="#d22" stroke="#333" stroke-width="1.5" />
+        <circle cx="12" cy="12" r="10" fill="#d22" stroke="#333" strokeWidth="1.5" />
       </svg>
     );
   }
 
   return (
-    <svg viewBox="0 0 24 24" fill="#fc0" stroke="#333" stroke-width="1.5" stroke-linejoin="round">
-      <path d="M12 2.8L14.9 8.7L21.4 9.6L16.7 14.1L17.9 20.6L12 17.5L6.1 20.6L7.3 14.1L2.6 9.6L9.1 8.7 Z" />
+    <svg viewBox="0 0 24 24" fill="#fc0" stroke="#333" strokeWidth="1.5" strokeLinejoin="round">
+      <path d="M12 2.5 14.94 8.46 21.5 9.41 16.75 14.04 17.87 20.58 12 17.5 6.13 20.58 7.25 14.04 2.5 9.41 9.06 8.46 Z" />
+      {/* <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 Z" /> */}
     </svg>
   );
 }
@@ -62,6 +63,7 @@ export default function App() {
   const [currentPlayer, setCurrentPlayer] = useState<Player>("red");
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState<Player | null>(null);
+  const [rulesOpen, setRulesOpen] = useState(false);
 
   function dropDisc(col: number) {
     if (gameOver === true) return;
@@ -96,6 +98,14 @@ export default function App() {
     return [base, color, faded].filter(Boolean).join(" ");
   }
 
+  function openRules() {
+    setRulesOpen(true);
+  }
+
+  function closeRules() {
+    setRulesOpen(false);
+  }
+
   return (
     <>
       <header className="header">
@@ -104,6 +114,13 @@ export default function App() {
           <span className="header__four">Four</span>
         </h1>
       </header>
+
+      <div className="menu">
+        <button className="menu__btn">New Game</button>
+        <button className="menu__btn" onClick={openRules}>Rules</button>
+      </div>
+
+      {rulesOpen === true && <RulesModal closeRules={closeRules} />}
 
       <div className="board">
         <div className="board__top">
@@ -136,6 +153,42 @@ export default function App() {
               )}
             </div>
           )))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+type RulesModalProps = { closeRules: () => void };
+
+function RulesModal({ closeRules }: RulesModalProps) {
+  return (
+    <>
+      <div className="rules-modal__backdrop" />
+
+      <div className="rules-modal">
+        <div className="rules-modal__content">
+          <h2 className="rules-modal__title">Rules</h2>
+
+          <div className="rules-modal__section">
+            <h3 className="rules-modal__subtitle">Objective</h3>
+            <p className="rules-modal__text">
+              Be the first player to connect four discs of the same color in a row,
+              vertically, horizontally, or diagonally.
+            </p>
+          </div>
+
+          <div className="rules-modal__section">
+            <h3 className="rules-modal__subtitle">How to Play</h3>
+            <ol className="rules-modal__list">
+              <li>Red goes first in the first game.</li>
+              <li>Players take turns dropping one disc per turn.</li>
+              <li>The game ends when a player connects four discs in a row or when the board is full.</li>
+              <li>In the next game, the starting player switches.</li>
+            </ol>
+          </div>
+
+          <button className="rules-modal__btn" onClick={closeRules}>✓</button>
         </div>
       </div>
     </>
