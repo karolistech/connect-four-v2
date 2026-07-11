@@ -4,6 +4,10 @@
   padding: 0;
 }
 
+button {
+  cursor: pointer;
+}
+
 body {
   padding: 0.25rem;
   font-family: system-ui;
@@ -38,10 +42,26 @@ body {
 
 .board__column {
   position: relative;
+  min-width: 0;
   aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
   align-items: flex-end;
+}
+
+.board__btn {
+  width: min(100%, 28px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #aaa;
+  border-radius: 50%;
+  background: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.5);
+}
+
+.board__arrow {
+  fill: #aaa;
 }
 
 .board__grid {
