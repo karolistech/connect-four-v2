@@ -79,6 +79,7 @@ body {
   background-color: #7ab;
   border-radius: 4px;
   box-shadow: var(--shadow-board-inner), var(--shadow-board-outer);
+  overflow: hidden;
 }
 
 .board__cell {
@@ -106,8 +107,8 @@ body {
 .board__disc::before {
   content: "";
   position: absolute;
-  width: 70%;
-  height: 70%;
+  width: 75%;
+  height: 75%;
   border-radius: inherit;
   box-shadow: inherit;
 }
@@ -125,8 +126,8 @@ body {
 }
 
 .board__disc svg {
-  width: 65%;
-  height: 65%;
+  width: 70%;
+  height: 70%;
 }
 
 .board__disc--preview {
@@ -136,6 +137,19 @@ body {
   transform: translateY(5px);
   display: none;
   pointer-events: none;
+}
+
+.board__cell > .board__disc {
+  animation: drop 250ms ease-out;
+}
+
+@keyframes drop {
+  from {
+    transform: translateY(-30rem);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
