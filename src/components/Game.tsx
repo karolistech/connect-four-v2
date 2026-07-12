@@ -103,7 +103,7 @@ export default function Game() {
 
             {gameOver !== true && (
               <div className="board__disc--preview">
-                <div className={`board__disc board__disc--${currentPlayer}`}>
+                <div className={getDiscClass(currentPlayer)}>
                   {getDiscIcon(currentPlayer)}
                 </div>
               </div>
