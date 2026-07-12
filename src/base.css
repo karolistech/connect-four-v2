@@ -7,7 +7,6 @@
 }
 
 * {
-  /* border: 1px solid red; */
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -18,10 +17,5 @@ button {
 }
 
 body {
-  padding: 0.25rem;
   font-family: system-ui;
-}
-
-#root {
-  position: relative;
 }
