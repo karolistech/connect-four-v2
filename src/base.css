@@ -6,7 +6,7 @@
   --shadow-inner: 2px 2px 2px rgba(83, 86, 90, 0.4) inset;
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -18,4 +18,5 @@ button {
 
 body {
   font-family: system-ui;
+  padding-inline: 0.25rem;
 }
