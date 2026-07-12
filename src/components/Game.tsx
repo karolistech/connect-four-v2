@@ -39,23 +39,14 @@ function boardFull(board: Board): boolean {
   return board.every(row => row.every(cell => cell !== null));
 }
 
-// function getPlayerDisc(player: Player) {
-//   return player === "red" ? "🔴" : "⭐";
-// }
-
-function getPlayerDisc(player: Player) {
-  if (player === "red") {
-    return (
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" fill="#d22" stroke="#333" strokeWidth="1.5" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" fill="#fc0" stroke="#333" strokeWidth="1.5" strokeLinejoin="round">
-      <path d="M12 2.5 14.94 8.46 21.5 9.41 16.75 14.04 17.87 20.58 12 17.5 6.13 20.58 7.25 14.04 2.5 9.41 9.06 8.46 Z" />
-      {/* <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 Z" /> */}
+function getDiscIcon(player: Player) {
+  return player === "red" ? (
+    <svg viewBox="0 0 24 24" className="board__disc-icon board__disc-icon--circle">
+        <circle cx="12" cy="12" r="10" />
+    </svg>
+  ) : (
+    <svg viewBox="0 0 24 24" className="board__disc-icon board__disc-icon--star">
+      <path d="M12 17.3L18.2 21l-1.6-7L22 9.2l-7.2-.6L12 2 9.2 8.6 2 9.2l5.5 4.7L5.8 21 Z" />
     </svg>
   );
 }
@@ -113,7 +104,7 @@ export default function Game() {
             {gameOver !== true && (
               <div className="board__disc--preview">
                 <div className={`board__disc board__disc--${currentPlayer}`}>
-                  {getPlayerDisc(currentPlayer)}
+                  {getDiscIcon(currentPlayer)}
                 </div>
               </div>
             )}
@@ -126,7 +117,7 @@ export default function Game() {
           <div key={`${rowIndex}-${colIndex}`} className="board__cell">
             {cell !== null && (
               <div className={getDiscClass(cell)}>
-                {getPlayerDisc(cell)}
+                {getDiscIcon(cell)}
               </div>
             )}
           </div>
