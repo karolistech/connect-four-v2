@@ -71,54 +71,54 @@ function getDiscIcon(player: Player) {
 }
 
 export default function Game() {
-    const [game, setGame] = useState<Game>(createGame);
+  const [game, setGame] = useState<Game>(createGame);
 
-    function dropDisc(col: number) {
-      if (game.status.type !== "playing") return;
+  function dropDisc(col: number) {
+    if (game.status.type !== "playing") return;
 
-      const board = game.board.map(row => [...row]);
-      const player = game.currentPlayer;
+    const board = game.board.map(row => [...row]);
+    const player = game.currentPlayer;
 
-      for (let row = rows - 1; row >= 0; row--) {
-        if (board[row][col] !== null) continue;
+    for (let row = rows - 1; row >= 0; row--) {
+      if (board[row][col] !== null) continue;
 
-        board[row][col] = player;
+      board[row][col] = player;
 
-        if (connectFour(board, row, col, player) === true) {
-          setGame({
-            board: board,
-            currentPlayer: player,
-            status: { type: "won", winner: player }
-          });
-        }
-
-        else if (boardFull(board) === true) {
-          setGame({
-            board: board,
-            currentPlayer: player,
-            status: { type: "draw" }
-          });
-        }
-
-        else {
-          setGame({
-            board: board,
-            currentPlayer: player === "red" ? "yellow" : "red",
-            status: { type: "playing" }
-          });
-        }
-
-        return;
+      if (connectFour(board, row, col, player) === true) {
+        setGame({
+          board: board,
+          currentPlayer: player,
+          status: { type: "won", winner: player }
+        });
       }
-    }
 
-    function getDiscClass(player: Player) {
-      const base = "board__disc";
-      const color = `board__disc--${player}`;
-      const faded = (game.status.type === "won" && game.status.winner !== player) && "board__disc--faded";
+      else if (boardFull(board) === true) {
+        setGame({
+          board: board,
+          currentPlayer: player,
+          status: { type: "draw" }
+        });
+      }
 
-      return [base, color, faded].filter(Boolean).join(" ");
+      else {
+        setGame({
+          board: board,
+          currentPlayer: player === "red" ? "yellow" : "red",
+          status: { type: "playing" }
+        });
+      }
+
+      return;
     }
+  }
+
+  function getDiscClass(player: Player) {
+    const base = "board__disc";
+    const color = `board__disc--${player}`;
+    const faded = (game.status.type === "won" && game.status.winner !== player) && "board__disc--faded";
+
+    return [base, color, faded].filter(Boolean).join(" ");
+  }
 
   return (
     <div className="board">
