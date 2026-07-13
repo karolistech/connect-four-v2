@@ -6,8 +6,27 @@ type Player = "red" | "yellow";
 type Cell = Player | null;
 type Board = Cell[][];
 
+type Status =
+  | { type: "playing" }
+  | { type: "won"; winner: Player }
+  | { type: "draw" };
+
+type Game = {
+  board: Board;
+  currentPlayer: Player;
+  status: Status;
+};
+
 const cols = 7;
 const rows = 6;
+
+function createGame(): Game {
+  return {
+    board: createBoard(),
+    currentPlayer: "red",
+    status: { type: "playing" }
+  };
+}
 
 function createBoard(): Board {
   return Array.from({ length: rows }, () => Array(cols).fill(null));
@@ -42,7 +61,7 @@ function boardFull(board: Board): boolean {
 function getDiscIcon(player: Player) {
   return player === "red" ? (
     <svg viewBox="0 0 24 24" className="board__disc-icon board__disc-icon--circle">
-        <circle cx="12" cy="12" r="10" />
+      <circle cx="12" cy="12" r="10" />
     </svg>
   ) : (
     <svg viewBox="0 0 24 24" className="board__disc-icon board__disc-icon--star">
@@ -52,30 +71,41 @@ function getDiscIcon(player: Player) {
 }
 
 export default function Game() {
-    const [board, setBoard] = useState(createBoard);
-    const [currentPlayer, setCurrentPlayer] = useState<Player>("red");
-    const [gameOver, setGameOver] = useState(false);
-    const [winner, setWinner] = useState<Player | null>(null);
+    const [game, setGame] = useState<Game>(createGame);
 
     function dropDisc(col: number) {
-      if (gameOver === true) return;
+      if (game.status.type !== "playing") return;
 
-      const nextBoard = board.map(row => [...row]);
-      const nextPlayer = currentPlayer === "red" ? "yellow" : "red";
+      const board = game.board.map(row => [...row]);
+      const player = game.currentPlayer;
 
       for (let row = rows - 1; row >= 0; row--) {
-        if (nextBoard[row][col] !== null) continue;
+        if (board[row][col] !== null) continue;
 
-        nextBoard[row][col] = currentPlayer;
-        setBoard(nextBoard);
+        board[row][col] = player;
 
-        if (connectFour(nextBoard, row, col, currentPlayer) === true) {
-          setWinner(currentPlayer);
-          setGameOver(true);
-        } else if (boardFull(nextBoard) === true) {
-          setGameOver(true);
-        } else {
-          setCurrentPlayer(nextPlayer);
+        if (connectFour(board, row, col, player) === true) {
+          setGame({
+            board: board,
+            currentPlayer: player,
+            status: { type: "won", winner: player }
+          });
+        }
+
+        else if (boardFull(board) === true) {
+          setGame({
+            board: board,
+            currentPlayer: player,
+            status: { type: "draw" }
+          });
+        }
+
+        else {
+          setGame({
+            board: board,
+            currentPlayer: player === "red" ? "yellow" : "red",
+            status: { type: "playing" }
+          });
         }
 
         return;
@@ -85,7 +115,7 @@ export default function Game() {
     function getDiscClass(player: Player) {
       const base = "board__disc";
       const color = `board__disc--${player}`;
-      const faded = (gameOver === true && winner !== player) && "board__disc--faded";
+      const faded = (game.status.type === "won" && game.status.winner !== player) && "board__disc--faded";
 
       return [base, color, faded].filter(Boolean).join(" ");
     }
@@ -101,10 +131,10 @@ export default function Game() {
               </svg>
             </button>
 
-            {gameOver !== true && (
+            {game.status.type === "playing" && (
               <div className="board__disc--preview">
-                <div className={getDiscClass(currentPlayer)}>
-                  {getDiscIcon(currentPlayer)}
+                <div className={getDiscClass(game.currentPlayer)}>
+                  {getDiscIcon(game.currentPlayer)}
                 </div>
               </div>
             )}
@@ -113,7 +143,7 @@ export default function Game() {
       </div>
 
       <div className="board__grid">
-        {board.map((row, rowIndex) => row.map((cell, colIndex) => (
+        {game.board.map((row, rowIndex) => row.map((cell, colIndex) => (
           <div key={`${rowIndex}-${colIndex}`} className="board__cell">
             {cell !== null && (
               <div className={getDiscClass(cell)}>
