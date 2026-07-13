@@ -25,6 +25,8 @@
 }
 
 .board__arrow {
+  width: 100%;
+  height: 100%;
   fill: #aaa;
 }
 

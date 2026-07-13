@@ -17,6 +17,6 @@ button {
 }
 
 body {
-  font-family: system-ui;
   padding-inline: 0.25rem;
+  font-family: system-ui;
 }
