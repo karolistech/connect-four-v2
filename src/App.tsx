@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import Header from "./Header";
-import Menu from "./Menu";
-import Game from "./Game";
+import { Header, Menu, Game } from "./components";
+
+import "./App.css";
 
 export default function App() {
   const [gameId, setGameId] = useState(0);

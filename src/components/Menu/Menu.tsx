@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import "./Menu.css";
+
 type MenuProps = { newGame: () => void };
 type RulesModalProps = { closeRules: () => void };
 
