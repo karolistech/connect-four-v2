@@ -4,8 +4,6 @@ import Header from "./Header";
 import Menu from "./Menu";
 import Game from "./Game";
 
-import "./App.css";
-
 export default function App() {
   const [gameId, setGameId] = useState(0);
 

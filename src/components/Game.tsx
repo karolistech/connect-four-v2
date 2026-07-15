@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import "./Game.css";
-
 type Player = "red" | "yellow";
 type Cell = Player | null;
 type Board = Cell[][];
