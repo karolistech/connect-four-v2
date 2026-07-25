@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 
 import "./Menu.css";
 
@@ -28,7 +28,7 @@ export default function Menu({ newGame }: MenuProps) {
   );
 }
 
-function RulesModal({ closeRules }: RulesModalProps) {
+function RulesModal({ closeRules }: RulesModalProps): JSX.Element {
   return (
     <>
       <div className="rules-modal__backdrop" />
